@@ -34,7 +34,7 @@ router.post("/login", async (req, res) => {
       .cookie("session_id", session.uuid)
       .json({ message: "Welcome " + session.username });
   } else {
-    res.status(400).json({ message: "Invalid credentials." });
+    res.status(400).json({ message: "You shall not pass!" });
   }
 });
 
@@ -53,7 +53,7 @@ function restricted(req, res, next) {
   if (session) {
     next();
   } else {
-    res.status(400).json({ message: "Please log in" });
+    res.status(400).json({ message: "You shall not pass!" });
   }
 }
 
