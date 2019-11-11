@@ -5,7 +5,9 @@ function getAllUsers() {
 }
 
 function getUserBy(searchParams) {
-  return db("users").where(searchParams);
+  return db("users")
+    .where(searchParams)
+    .first();
 }
 
 function addUser(user) {
