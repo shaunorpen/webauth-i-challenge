@@ -12,11 +12,21 @@ router.get("/users", restricted, async (req, res) => {
   }
 });
 
+router.get("/*", restricted, async (req, res) => {
+  try {
+    res
+      .status(200)
+      .json({ message: "You're logged in ok, but nothing to show here." });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+});
+
 function restricted(req, res, next) {
   if (req.session && req.session.user) {
     next();
   } else {
-    res.status(400).json({ message: 'No credentials provided' });
+    res.status(400).json({ message: "No credentials provided" });
   }
 }
 
