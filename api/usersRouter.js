@@ -2,7 +2,6 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const uuid = require("uuid");
 const users = require("./usersModel");
-const { sessions } = require("../sessions");
 
 const router = express.Router();
 
@@ -27,12 +26,10 @@ router.post("/login", async (req, res) => {
     userDetails &&
     bcrypt.compareSync(credentials.password, userDetails.password)
   ) {
-    const session = { ...userDetails, uuid: uuid() };
-    sessions.push(session);
+    req.session.user = userDetails;
     res
       .status(200)
-      .cookie("session_id", session.uuid)
-      .json({ message: "Welcome " + session.username });
+      .json({ message: "Welcome " + req.session.user.username });
   } else {
     res.status(400).json({ message: "You shall not pass!" });
   }

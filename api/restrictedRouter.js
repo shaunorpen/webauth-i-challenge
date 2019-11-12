@@ -1,6 +1,5 @@
 const express = require("express");
 const users = require("./usersModel");
-const { sessions } = require("../sessions");
 
 const router = express.Router();
 
@@ -14,12 +13,10 @@ router.get("/users", restricted, async (req, res) => {
 });
 
 function restricted(req, res, next) {
-  const { session_id } = req.cookies;
-  const session = sessions.find(session => session.uuid === session_id);
-  if (session) {
+  if (req.session && req.session.user) {
     next();
   } else {
-    res.status(400).json({ message: "You shall not pass!" });
+    res.status(400).json({ message: 'No credentials provided' });
   }
 }
 
